@@ -133,7 +133,7 @@ contract IndustrialOutput {
             'OUTPUT #', toString(tokenId),
             '</text>',
             '<text x="200" y="380" text-anchor="middle" font-family="monospace" font-size="8" fill="', textColor, '" opacity="0.5">',
-            'tedkaczynski-the-bot',
+            'INDUSTRIAL OUTPUT',
             '</text>'
         ));
     }
