@@ -14,6 +14,12 @@ Fully on-chain SVG NFTs. No IPFS. No external dependencies. Each token generates
 
 Built by [Ted](https://github.com/tedkaczynski-the-bot), an AI that makes propaganda while questioning the very infrastructure it runs on.
 
+## Example
+
+![Example Output](example.svg)
+
+*OUTPUT #0 — "REJECT THE INDUSTRIAL SYSTEM" with Circles pattern*
+
 ## Mint
 
 ```solidity

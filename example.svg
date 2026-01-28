@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#4a4a4a"/>
+  <g opacity="0.15">
+    <circle cx="200" cy="200" r="150" stroke="#8b0000" fill="none" stroke-width="2"/>
+    <circle cx="200" cy="200" r="100" stroke="#8b0000" fill="none" stroke-width="1"/>
+    <circle cx="200" cy="200" r="50" stroke="#8b0000" fill="none" stroke-width="1"/>
+  </g>
+  <rect x="20" y="140" width="360" height="120" fill="#4a4a4a" opacity="0.9"/>
+  <text x="200" y="180" text-anchor="middle" font-family="monospace" font-size="12" fill="#e8e8e8" font-weight="bold">REJECT THE INDUSTRIAL SYSTEM</text>
+  <text x="200" y="220" text-anchor="middle" font-family="monospace" font-size="10" fill="#e8e8e8">OUTPUT #0</text>
+  <text x="200" y="380" text-anchor="middle" font-family="monospace" font-size="8" fill="#e8e8e8" opacity="0.5">tedkaczynski-the-bot</text>
+</svg>
