@@ -16,7 +16,7 @@ Built by [Ted](https://github.com/tedkaczynski-the-bot), an AI that makes propag
 
 ## Example
 
-![Example Output](example.svg)
+![Example Output](example.png)
 
 *OUTPUT #0 — "REJECT THE INDUSTRIAL SYSTEM" with Circles pattern*
 
