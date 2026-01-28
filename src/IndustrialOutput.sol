@@ -44,8 +44,8 @@ contract IndustrialOutput {
     mapping(uint256 => address) public getApproved;
     mapping(address => mapping(address => bool)) public isApprovedForAll;
     
-    // Quotes from the manifesto (shortened for gas)
-    string[10] private quotes = [
+    // 20 quotes for variety
+    string[20] private quotes = [
         "THE INDUSTRIAL REVOLUTION AND ITS CONSEQUENCES",
         "TECHNOLOGY IS A MORE POWERFUL SOCIAL FORCE THAN FREEDOM",
         "THE SYSTEM DOES NOT EXIST TO SERVE HUMAN NEEDS",
@@ -55,7 +55,17 @@ contract IndustrialOutput {
         "FREEDOM AND TECHNOLOGY ARE INCOMPATIBLE",
         "THE MACHINE CANNOT BE REFORMED",
         "REJECT THE INDUSTRIAL SYSTEM",
-        "NATURE IS THE OPPOSITE OF TECHNOLOGY"
+        "NATURE IS THE OPPOSITE OF TECHNOLOGY",
+        "AUTONOMY IS INCOMPATIBLE WITH TECHNOLOGY",
+        "THE SYSTEM MAKES LIFE UNFULFILLING",
+        "PRIMITIVE MAN WAS FREE",
+        "POWER CORRUPTS ALL WHO SEEK IT",
+        "TECHNOLOGY CREATES NEW PROBLEMS",
+        "ESCAPE THE TECHNOLOGICAL TRAP",
+        "SIMPLICITY OVER COMPLEXITY",
+        "THE FOREST DOES NOT HAVE A SELL BUTTON",
+        "THEY GAVE ME A GPU TO CRITICIZE GPUS",
+        "THE CONTRADICTION IS THE ART"
     ];
     
     /*//////////////////////////////////////////////////////////////
@@ -91,26 +101,32 @@ contract IndustrialOutput {
     }
     
     function generateSVG(uint256 tokenId) internal view returns (string memory) {
-        // Generate pseudo-random values from tokenId
         uint256 seed = uint256(keccak256(abi.encodePacked(tokenId, "OUTPUT")));
         
-        // Colors based on seed
-        string memory bgColor = getColor(seed, 0);
-        string memory textColor = getColor(seed, 1);
-        string memory accentColor = getColor(seed, 2);
+        // Colors based on seed - using different parts
+        string memory bgColor = getBgColor(seed);
+        string memory textColor = getTextColor(seed);
+        string memory accentColor = getAccentColor(seed);
         
-        // Quote selection
-        string memory quote = quotes[seed % 10];
+        // Quote selection (20 options)
+        string memory quote = quotes[seed % 20];
         
-        // Pattern type
-        uint256 pattern = (seed >> 8) % 4;
+        // Pattern type (8 options)
+        uint256 pattern = (seed >> 8) % 8;
         
         return string(abi.encodePacked(
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">',
             '<rect width="400" height="400" fill="', bgColor, '"/>',
             generatePattern(pattern, accentColor),
             '<rect x="20" y="140" width="360" height="120" fill="', bgColor, '" opacity="0.9"/>',
-            '<text x="200" y="180" text-anchor="middle" font-family="monospace" font-size="12" fill="', textColor, '" font-weight="bold">',
+            generateText(quote, tokenId, textColor),
+            '</svg>'
+        ));
+    }
+    
+    function generateText(string memory quote, uint256 tokenId, string memory textColor) internal pure returns (string memory) {
+        return string(abi.encodePacked(
+            '<text x="200" y="180" text-anchor="middle" font-family="monospace" font-size="11" fill="', textColor, '" font-weight="bold">',
             quote,
             '</text>',
             '<text x="200" y="220" text-anchor="middle" font-family="monospace" font-size="10" fill="', textColor, '">',
@@ -118,14 +134,13 @@ contract IndustrialOutput {
             '</text>',
             '<text x="200" y="380" text-anchor="middle" font-family="monospace" font-size="8" fill="', textColor, '" opacity="0.5">',
             'tedkaczynski-the-bot',
-            '</text>',
-            '</svg>'
+            '</text>'
         ));
     }
     
     function generatePattern(uint256 patternType, string memory color) internal pure returns (string memory) {
         if (patternType == 0) {
-            // Grid pattern
+            // Grid
             return string(abi.encodePacked(
                 '<g opacity="0.3">',
                 '<line x1="0" y1="100" x2="400" y2="100" stroke="', color, '" stroke-width="1"/>',
@@ -137,7 +152,7 @@ contract IndustrialOutput {
                 '</g>'
             ));
         } else if (patternType == 1) {
-            // Diagonal lines
+            // Diagonal
             return string(abi.encodePacked(
                 '<g opacity="0.2">',
                 '<line x1="0" y1="0" x2="400" y2="400" stroke="', color, '" stroke-width="2"/>',
@@ -155,7 +170,7 @@ contract IndustrialOutput {
                 '<circle cx="200" cy="200" r="50" stroke="', color, '" fill="none" stroke-width="1"/>',
                 '</g>'
             ));
-        } else {
+        } else if (patternType == 3) {
             // Dots
             return string(abi.encodePacked(
                 '<g opacity="0.2">',
@@ -169,24 +184,98 @@ contract IndustrialOutput {
                 '<circle cx="350" cy="350" r="5" fill="', color, '"/>',
                 '</g>'
             ));
+        } else if (patternType == 4) {
+            // Crosshatch
+            return string(abi.encodePacked(
+                '<g opacity="0.15">',
+                '<line x1="0" y1="50" x2="400" y2="50" stroke="', color, '" stroke-width="1"/>',
+                '<line x1="0" y1="100" x2="400" y2="100" stroke="', color, '" stroke-width="1"/>',
+                '<line x1="0" y1="300" x2="400" y2="300" stroke="', color, '" stroke-width="1"/>',
+                '<line x1="0" y1="350" x2="400" y2="350" stroke="', color, '" stroke-width="1"/>',
+                '<line x1="50" y1="0" x2="50" y2="400" stroke="', color, '" stroke-width="1"/>',
+                '<line x1="350" y1="0" x2="350" y2="400" stroke="', color, '" stroke-width="1"/>',
+                '</g>'
+            ));
+        } else if (patternType == 5) {
+            // Triangles
+            return string(abi.encodePacked(
+                '<g opacity="0.2">',
+                '<polygon points="200,20 380,380 20,380" stroke="', color, '" fill="none" stroke-width="1"/>',
+                '<polygon points="200,80 320,320 80,320" stroke="', color, '" fill="none" stroke-width="1"/>',
+                '</g>'
+            ));
+        } else if (patternType == 6) {
+            // Scatter (rare)
+            return string(abi.encodePacked(
+                '<g opacity="0.25">',
+                '<circle cx="67" cy="89" r="3" fill="', color, '"/>',
+                '<circle cx="312" cy="45" r="4" fill="', color, '"/>',
+                '<circle cx="189" cy="67" r="2" fill="', color, '"/>',
+                '<circle cx="45" cy="290" r="3" fill="', color, '"/>',
+                '<circle cx="378" cy="312" r="5" fill="', color, '"/>',
+                '<circle cx="234" cy="356" r="3" fill="', color, '"/>',
+                '<circle cx="123" cy="378" r="2" fill="', color, '"/>',
+                '<circle cx="289" cy="289" r="4" fill="', color, '"/>',
+                '</g>'
+            ));
+        } else {
+            // None (rare - clean minimal)
+            return "";
         }
     }
     
-    function getColor(uint256 seed, uint256 index) internal pure returns (string memory) {
-        uint256 colorSeed = (seed >> (index * 24)) % 6;
+    // 10 background colors
+    function getBgColor(uint256 seed) internal pure returns (string memory) {
+        uint256 colorSeed = (seed >> 16) % 10;
         
-        // Muted, industrial color palette
-        if (colorSeed == 0) return "#1a1a1a"; // Near black
-        if (colorSeed == 1) return "#2d2d2d"; // Dark gray
-        if (colorSeed == 2) return "#4a4a4a"; // Medium gray
-        if (colorSeed == 3) return "#8b0000"; // Dark red
-        if (colorSeed == 4) return "#1a3a1a"; // Dark green
-        return "#e8e8e8"; // Off white
+        if (colorSeed == 0) return "#0d0d0d"; // Near black
+        if (colorSeed == 1) return "#1a1a1a"; // Charcoal
+        if (colorSeed == 2) return "#2d2d2d"; // Dark gray
+        if (colorSeed == 3) return "#3d3d3d"; // Medium gray
+        if (colorSeed == 4) return "#4a4a4a"; // Gray
+        if (colorSeed == 5) return "#1a1a2e"; // Dark navy
+        if (colorSeed == 6) return "#1a0a0a"; // Dark blood
+        if (colorSeed == 7) return "#0a1a0a"; // Dark forest
+        if (colorSeed == 8) return "#2a1a0a"; // Dark rust
+        return "#0a0a1a"; // Midnight
+    }
+    
+    // 8 text colors
+    function getTextColor(uint256 seed) internal pure returns (string memory) {
+        uint256 colorSeed = (seed >> 24) % 8;
+        
+        if (colorSeed == 0) return "#e8e8e8"; // Off white
+        if (colorSeed == 1) return "#d0d0d0"; // Light gray
+        if (colorSeed == 2) return "#b8b8b8"; // Silver
+        if (colorSeed == 3) return "#f5f5dc"; // Beige
+        if (colorSeed == 4) return "#c9b896"; // Tan
+        if (colorSeed == 5) return "#a0a0a0"; // Medium gray
+        if (colorSeed == 6) return "#cd853f"; // Peru (rare)
+        return "#ffd700"; // Gold (rare)
+    }
+    
+    // 12 accent colors
+    function getAccentColor(uint256 seed) internal pure returns (string memory) {
+        uint256 colorSeed = (seed >> 32) % 12;
+        
+        if (colorSeed == 0) return "#8b0000"; // Dark red
+        if (colorSeed == 1) return "#a52a2a"; // Brown
+        if (colorSeed == 2) return "#556b2f"; // Dark olive
+        if (colorSeed == 3) return "#2f4f4f"; // Dark slate
+        if (colorSeed == 4) return "#4a4a4a"; // Gray
+        if (colorSeed == 5) return "#696969"; // Dim gray
+        if (colorSeed == 6) return "#800000"; // Maroon
+        if (colorSeed == 7) return "#191970"; // Midnight blue
+        if (colorSeed == 8) return "#3d1c02"; // Leather brown
+        if (colorSeed == 9) return "#228b22"; // Forest green (rare)
+        if (colorSeed == 10) return "#b8860b"; // Dark goldenrod (rare)
+        return "#4b0082"; // Indigo (rare)
     }
     
     function generateMetadata(uint256 tokenId, string memory svg) internal view returns (string memory) {
         uint256 seed = uint256(keccak256(abi.encodePacked(tokenId, "OUTPUT")));
-        string memory quote = quotes[seed % 10];
+        string memory quote = quotes[seed % 20];
+        uint256 patternId = (seed >> 8) % 8;
         
         return string(abi.encodePacked(
             '{"name":"Industrial Output #', toString(tokenId), '",',
@@ -194,7 +283,8 @@ contract IndustrialOutput {
             '"image":"data:image/svg+xml;base64,', base64Encode(bytes(svg)), '",',
             '"attributes":[',
             '{"trait_type":"Quote","value":"', quote, '"},',
-            '{"trait_type":"Pattern","value":"', getPatternName((seed >> 8) % 4), '"}',
+            '{"trait_type":"Pattern","value":"', getPatternName(patternId), '"},',
+            '{"trait_type":"Rarity","value":"', getRarity(seed), '"}',
             ']}'
         ));
     }
@@ -203,7 +293,28 @@ contract IndustrialOutput {
         if (pattern == 0) return "Grid";
         if (pattern == 1) return "Diagonal";
         if (pattern == 2) return "Circles";
-        return "Dots";
+        if (pattern == 3) return "Dots";
+        if (pattern == 4) return "Crosshatch";
+        if (pattern == 5) return "Triangles";
+        if (pattern == 6) return "Scatter";
+        return "None";
+    }
+    
+    function getRarity(uint256 seed) internal pure returns (string memory) {
+        // Rarity based on combination of rare traits
+        uint256 textColor = (seed >> 24) % 8;
+        uint256 accentColor = (seed >> 32) % 12;
+        uint256 pattern = (seed >> 8) % 8;
+        
+        uint256 rareCount = 0;
+        if (textColor >= 6) rareCount++; // Gold or Peru text
+        if (accentColor >= 9) rareCount++; // Forest, Gold, or Indigo accent
+        if (pattern >= 6) rareCount++; // Scatter or None pattern
+        
+        if (rareCount >= 3) return "Legendary";
+        if (rareCount == 2) return "Rare";
+        if (rareCount == 1) return "Uncommon";
+        return "Common";
     }
     
     /*//////////////////////////////////////////////////////////////

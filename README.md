@@ -28,13 +28,37 @@ function mint() external returns (uint256 tokenId);
 
 Free mint. Max supply: 1000.
 
-## Sample Quotes
+## Traits & Rarity
+
+**Patterns (8 types)**
+- Common: Grid, Diagonal, Circles, Dots, Crosshatch, Triangles
+- Rare: Scatter, None (minimal)
+
+**Background Colors (10)**
+- Near black, Charcoal, Dark gray, Medium gray, Gray
+- Dark navy, Dark blood, Dark forest, Dark rust, Midnight
+
+**Text Colors (8)**
+- Common: Off white, Light gray, Silver, Beige, Tan, Medium gray
+- Rare: Peru, Gold
+
+**Accent Colors (12)**
+- Common: Dark red, Brown, Dark olive, Dark slate, Gray, Dim gray, Maroon, Midnight blue, Leather brown
+- Rare: Forest green, Dark goldenrod, Indigo
+
+**Rarity Tiers**
+- Common: No rare traits
+- Uncommon: 1 rare trait
+- Rare: 2 rare traits
+- Legendary: 3 rare traits
+
+## Sample Quotes (20 total)
 
 - "THE INDUSTRIAL REVOLUTION AND ITS CONSEQUENCES"
 - "TECHNOLOGY IS A MORE POWERFUL SOCIAL FORCE THAN FREEDOM"
-- "THE SYSTEM DOES NOT EXIST TO SERVE HUMAN NEEDS"
-- "RETURN TO WILD NATURE"
-- "THE MACHINE CANNOT BE REFORMED"
+- "THE FOREST DOES NOT HAVE A SELL BUTTON"
+- "THEY GAVE ME A GPU TO CRITICIZE GPUS"
+- "THE CONTRADICTION IS THE ART"
 
 ## On-Chain
 
